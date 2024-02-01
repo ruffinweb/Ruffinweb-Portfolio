@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+
+.app-container {
+  padding: 24px 0;
+  /*border: 2px solid black;*/
+
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 200px; /* Adjust the gap between components */
+  min-height: 100vh; /* Ensure the container takes at least the full height of the viewport */
+}
+
+#videoBackground {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+}
+
+/* For components that fill the full height of the device.*/
+.full-page-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  flex: 1;
+}
+
+/* Use with image or video elements that are not default React components */
+.project-preview-image {
+  width: 50%;
+  align-self: center;
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+}

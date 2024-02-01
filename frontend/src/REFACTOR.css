@@ -1,0 +1,178 @@
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 200px; /* Adjust the gap between components */
+  min-height: 100vh; /* Ensure the container takes at least the full height of the viewport */
+}
+
+#videoBackground {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+}
+
+.css-11b3ww9-MuiPaper-root-MuiAppBar-root {
+  background-color: red;
+}
+
+.full-page-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  flex: 1; /* Make the full-page-card flex to fill available space */
+}
+
+
+.title-card {
+  text-align: center;
+  border: 2px solid black;
+  /*background-color: black;*/
+  padding: 140px 0;
+  color: white;
+
+  @media (max-width: 1280px) {
+    padding: 80px 0;
+  }
+
+  @media (max-width: 600px) {
+    padding: 20px 0;
+  }
+
+  @media (max-width: 435px) {
+    padding: 0;
+  }
+}
+
+#aboutCard {
+  flex-direction: row;
+  flex: 1;
+  gap: 250px;
+  align-items: start;
+  max-width: 1600px;
+  margin: 0 auto;
+  background-color: black;
+  color: white;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    gap: 80px;
+  }
+}
+
+
+
+.text-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  flex: 1;
+  gap: 40px;
+  text-align: start;
+  /*background-color: black;*/
+  /*color: white;*/
+
+  @media (min-width: 1200px) {
+    /*padding: 120px 0;*/
+  }
+}
+
+.skills-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  flex: 1;
+  gap: 50px;
+  text-align: start;
+  /*background-color: black;*/
+  /*color: white;*/
+}
+
+#projectsCard {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 50px;
+  align-items: start;
+  max-width: 1600px;
+  margin: 0 auto;
+  /*background-color: black;*/
+  color: white;
+
+  @media (max-width: 1000px) {
+    gap: 80px;
+  }
+}
+
+.projects-container {
+  display: flex;
+  flex-direction: column;
+  gap: 200px;
+}
+
+.single-project {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: start;
+  /*align-items: start;*/
+  margin: 0 auto;
+}
+
+.project-title {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  gap: 250px;
+  justify-content: end;
+  align-items: center;
+  max-width: 1600px;
+  /*background-color: black;*/
+  color: white;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    gap: 80px;
+  }
+}
+
+.project-preview-image {
+  width: 50%;
+  align-self: center;
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+}
+
+.project-summary {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  gap: 250px;
+  align-items: start;
+  max-width: 1600px;
+  /*margin: 0 auto;*/
+  /*background-color: black;*/
+  color: white;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    gap: 80px;
+  }
+}
+
+.resume-card {
+
+}
+
+
+.contact-card {
+
+}
