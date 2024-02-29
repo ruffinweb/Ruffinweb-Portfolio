@@ -48,7 +48,7 @@ BLOCK
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone [<repository-url>](https://github.com/ruffinweb/Ruffinweb-Portfolio-Backend.git)
+   git clone https://github.com/ruffinweb/Ruffinweb-Portfolio-Backend.git
    ```
    
 2. Navigate to the project directory:
