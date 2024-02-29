@@ -48,12 +48,12 @@ BLOCK
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/ruffinweb/Ruffinweb-Portfolio-Backend.git)
    ```
    
 2. Navigate to the project directory:
    ```bash
-   cd <project-directory>
+   cd RuffinwebProject
    ```
    
 3. Create and activate a virtual environment:
