@@ -29,7 +29,6 @@ This project is for displaying information about me as a full-stack developer. T
 - Django
 - Django REST Framework (DRF)
 - PostgreSQL
-- Git
 
 ## Getting Started
 
@@ -42,6 +41,7 @@ Make sure you have the following prerequisites installed on your machine:
 - Python 3.x
 - pip (Python package installer)
 - PostgreSQL
+- Git
 
 ### Installation
 
