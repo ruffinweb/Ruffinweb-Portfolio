@@ -29,6 +29,7 @@ This project is for displaying information about me as a full-stack developer. T
 - Django
 - Django REST Framework (DRF)
 - PostgreSQL
+- Git
 
 ## Getting Started
 
