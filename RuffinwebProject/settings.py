@@ -56,7 +56,9 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",
-    # "http://localhost:8000",
+    "http://localhost:8000",
+    # "http://localhost:8000/api/sender",
+    "http://localhost:3000",
     "https://ruffinweb.com",
     # Add other allowed origins as needed
 ]
