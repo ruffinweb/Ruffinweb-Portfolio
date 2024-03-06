@@ -1,4 +1,4 @@
-# Ruffinweb
+# Ruffinweb Backend
 
 This project serves as the portfolio for Elijah Ruffin, showcasing his work as a full-stack developer. The backend consists of simple Message and Sender models for storing information submitted by users.
 
@@ -41,6 +41,7 @@ Make sure you have the following prerequisites installed on your machine:
 - Python 3.x
 - pip (Python package installer)
 - PostgreSQL
+- Git
 
 ### Installation
 
