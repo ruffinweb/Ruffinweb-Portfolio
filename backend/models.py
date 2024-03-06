@@ -11,7 +11,7 @@ class Sender(models.Model):
     first_name = models.CharField(max_length=200, null=False, default="")
     last_name = models.CharField(max_length=200, null=False, default="")
     # Emails need to be hashed before saving.
-    email = models.EmailField(max_length=200, default="", unique=True)
+    email = models.EmailField(max_length=200, default="")
 
 
 # The contact message sent by a website user.
