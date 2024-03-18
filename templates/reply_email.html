@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <title>Thank You for Visiting Ruffinweb</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'backend/css/style.css' %}">
+</head>
+<body>
+    <div class="email-container">
+        <img src="https://example.com/logo.png" alt="Ruffinweb Logo">
+        <h1>{{ subject }}</h1>
+        <p>Hi {{ sender_first_name }},</p>
+        <p>Thank you for visiting my portfolio website. I appreciate your interest in my work.</p>
+        <p>I will review your message and be in contact with you as soon as possible.</p>
+        <p>If you have any urgent inquiries, please feel free to reach out to me directly at <strong>443-420-7127</strong>.</p>
+        <p>Best regards,</p>
+        <p>Elijah Ruffin</p>
+        <p>Ruffinweb</p>
+    </div>
+</body>
+</html>

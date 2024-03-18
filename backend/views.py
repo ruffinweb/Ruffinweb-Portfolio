@@ -1,59 +1,112 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.exceptions import ValidationError
-
 from .serializers import SenderSerializer, MessageSerializer
-from .models import Sender, Message
 from rest_framework import generics, viewsets, status
 from rest_framework.response import Response
+from .models import Sender, Message
+from .utilities import send_html_email
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 # Main Contact form view.
-class ContactView(generics.CreateAPIView):
+class SenderView(generics.CreateAPIView):
     queryset = Sender.objects.all()
     serializer_class = SenderSerializer
 
 
-class MessageCreateAPIView(generics.CreateAPIView):
+""" CreateMessageAPIView takes the data from a Message record and adds the information to the database.
+It overrides the generic create method to ensure proper handling of Message records in cases where
+the associated email already exists in the database.
+This prevents duplicate emails from being added and allows all messages sent from that
+specific email to be queried more efficiently."""
+
+
+class CreateMessageAPIView(generics.CreateAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
 
-    # This custom create method is meant to resolve the 400 error response that occurs as soon as the form is submitted.
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
+            # Extract sender data from the request and create a new sender object.
+            sender_first_name = request.data.get("first_name")
+            sender_last_name = request.data.get("last_name")
+            sender_email = request.data.get("email")
+            sender = Sender.objects.filter(email=sender_email).first()
+
+            # If sender doesn't exist, create a new one
+            if not sender:
+                sender = Sender.objects.create(
+                    first_name=sender_first_name,
+                    last_name=sender_last_name,
+                    email=sender_email,
+                )
+
+            # Associate the sender with the message.
+            serializer.validated_data["message_sender"] = sender
+
+            # Create a message record after assigning the matching Sender object to the message_sender field
+            self.perform_create(serializer)
+
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            )
+
+        except Exception as e:
+            # Handle any exceptions gracefully
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# This view takes the data from a Message record and sends reply email to the associated Contact record.
+class SendReplyEmailAPIView(generics.CreateAPIView):
+    queryset = Sender.objects.all()
+    serializer_class = SenderSerializer
+
     def create(self, request, *args, **kwargs):
         try:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
             # Extract sender data from the request
-            sender_first_name = request.data.get('first_name')
-            sender_last_name = request.data.get('last_name')
-            sender_email = request.data.get('email')
+            sender_first_name = serializer.validated_data.get("first_name")
+            sender_last_name = serializer.validated_data.get("last_name")
+            sender_email = serializer.validated_data.get("email")
+            general_subject = "Thanks for visiting Ruffinweb!"
+            email_template = "reply_email.html"
 
-            # Match the email taken from the request to an available Sender record
-            sender = Sender.objects.filter(email=sender_email).first()
+            # Context data for the email template
+            email_context = {
+                "sender_first_name": sender_first_name,
+                "sender_last_name": sender_last_name,
+                "sender_email": sender_email,
+                "subject": general_subject,
+            }
 
-            # If sender doesn't exist, create a new one
-            if not sender:
-                sender = Sender.objects.create(first_name=sender_first_name, last_name=sender_last_name, email=sender_email)
+            # Send the HTML email
+            send_html_email(
+                subject=general_subject,
+                template_name=email_template,
+                context=email_context,
+                recipient_list=[sender_email],
+            )
 
-            # Associate the sender with the message.
-            serializer.validated_data['message_sender'] = sender
+            # Return success response
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-            # Create a message record after assigning the matching Sender object to the message_sender field
-            self.perform_create(serializer)
-            headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-        except ValidationError as e:
-            # Handle the validation error gracefully
-            return Response({'message': 'Email already exists'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            # Handle any exceptions gracefully
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# This view set includes additional methods to handle situations where a message is submitted with an email that already
-# Exists in the database. Rather than returning an error response when the new Sender is not created, a different method
-# is used. For
-class ContactViewSet(viewsets.ModelViewSet):
+""" SenderViewSet handles CRUD operations for the Sender model,
+providing endpoints to create, retrieve, update, and delete sender information.
+It includes additional methods to ensure proper handling of new sender creation
+and returns error responses gracefully in case of validation or database errors."""
+
+
+class SenderViewSet(viewsets.ModelViewSet):
     queryset = Sender.objects.all()
     serializer_class = SenderSerializer
 
@@ -61,11 +114,18 @@ class ContactViewSet(viewsets.ModelViewSet):
         serializer.save()
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        instance = self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            instance = self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            )
+
+        except Exception as e:
+            # Handle any exceptions gracefully
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MessageViewSet(viewsets.ModelViewSet):

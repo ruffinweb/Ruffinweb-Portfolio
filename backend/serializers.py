@@ -1,21 +1,21 @@
-from django.utils.encoding import force_bytes
 from rest_framework import serializers
-from rest_framework import generics
 from .models import Sender, Message
-import hashlib
+
+
+"""The create method of SenderSerializer resolves the 400 error response that occurs as soon as the form is submitted.
+This error only occurs when I include the unique constraint on the email field.
+I still need to investigate how I can bypass this error message and use the constraint normally.
+The message in the error console: 'sender with this email already exists.' """
 
 
 class SenderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sender
-        fields = ('first_name', 'last_name', 'email')
+        fields = ("first_name", "last_name", "email")
 
     def create(self, validated_data):
-        email = validated_data.get('email')
+        email = validated_data.get("email")
         sender = Sender.objects.filter(email=email).first()
-
-        # These line were meant to resolve the 400 error response that occurs as soon as the form is submitted.
-        # The message: "sender with this email already exists."
         if sender:
             # If sender exists, return the existing instance
             return sender
@@ -23,9 +23,7 @@ class SenderSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-# Message serializer
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('message', 'reply', 'date', 'message_sender')
-
+        fields = ("message", "reply", "date", "message_sender")
