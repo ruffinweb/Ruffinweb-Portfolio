@@ -71,7 +71,7 @@ After deployment, I'll add unit testing with Pytest and include it in my CI/CD p
 
 - Authentication or Authorization could be used for the backend endpoints. 
 This will discourage malicious and ensures each user uses only the resources I want. 
-I use the the ALLOWED_HOSTS setting to limit the hosts/domains names that the application and serve. This helps prevent HTTP host header attacks. 
+I use the ALLOWED_HOSTS setting to limit the hosts/domains names that the application and serve. This helps prevent HTTP host header attacks. 
 The ALLOWED_ORIGINS and C settings 
 - 
 

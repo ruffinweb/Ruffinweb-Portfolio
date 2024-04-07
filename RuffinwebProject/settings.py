@@ -66,23 +66,23 @@ REST_FRAMEWORK = {
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:80",  # for SSL, forwarded to 400
-    "http://localhost:8000",  # backend server
-    "http://localhost:3000",  # frontend server
-    "https://ruffinweb.com",  # might not need this
+    "http://localhost:8000",  # development backend server
+    "http://localhost:3000",  # development frontend server
     # these should be the final settings
+    "https://ruffinweb.com",  # cloudfront distribution custom domain name.
     # "https://backend-server-domain.com",
-    # "http://s3-bucket-domain.s3.amazonaws.com",
+    # "http://cloudfront-domain.s3.amazonaws.com",
 ]
 
-# CSRF_TRUSTED_ORIGIN = [
-#     "http://localhost:80",  # for SSL, forwarded to 400
-#     "http://localhost:8000",  # backend server
-#     "http://localhost:3000",  # frontend server
-#     "https://ruffinweb.com",  # might not need this
-#     # these should be the final settings
-#     # "https://your-backend-server-domain.com",
-#     # "http://your-s3-bucket-domain.s3.amazonaws.com",
-# ]
+CSRF_TRUSTED_ORIGIN = [
+    "http://localhost:80",  # for SSL, forwarded to 400
+    "http://localhost:8000",  # development backend server
+    "http://localhost:3000",  # development frontend server
+    # these should be the final settings
+    "https://ruffinweb.com",  # cloudfront distribution custom domain name.
+    # "https://backend-server-domain.com",
+    # "http://cloudfront-domain.s3.amazonaws.com",
+]
 
 
 ROOT_URLCONF = "RuffinwebProject.urls"
@@ -109,14 +109,20 @@ WSGI_APPLICATION = "RuffinwebProject.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Postgres has a pg_services.conf option to pass in the values of the database configuration which im not using here.
 DATABASES = {
-    # Add PostgreSQL Credentials here.
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("PG_DATABASE_NAME"),
+        "USER": os.getenv("PG_USER"),
+        "PASSWORD": os.getenv("PG_PASSWORD"),
+        "HOST": os.getenv("EMAIL_USER"),
+        "PORT": os.getenv("PG_PORT"),
+        "CLIENT_ENCODING": "UTF8",
+        "DEFAULT_TRANSACTION_ISOLATION": "read committed",
+        "TIMEZONE": "UTC"
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
